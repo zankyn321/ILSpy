@@ -1,0 +1,12 @@
+﻿<Project>
+	<PropertyGroup>
+		<Company>ic#code</Company>
+		<Authors>ic#code</Authors>
+		<Product>ILSpy</Product>
+		<Copyright>Copyright 2011-$INSERTYEAR$ AlphaSierraPapa for the SharpDevelop Team</Copyright>
+		<NeutralLanguage>en-US</NeutralLanguage>
+		<Version>$INSERTVERSION$$INSERTBRANCHPOSTFIX$$INSERTVERSIONNAMEPOSTFIX$-$INSERTSHORTCOMMITHASH$</Version>
+		<AssemblyVersion>$INSERTVERSION$</AssemblyVersion>
+		<FileVersion>$INSERTVERSION$</FileVersion>
+	</PropertyGroup>
+</Project>
