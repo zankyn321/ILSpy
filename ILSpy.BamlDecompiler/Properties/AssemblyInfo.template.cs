@@ -13,7 +13,7 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: AssemblyDescription("BAML decompiler engine")]
 [assembly: AssemblyCompany("ic#code")]
 [assembly: AssemblyProduct("ILSpy")]
-[assembly: AssemblyCopyright("Copyright 2011-2017 AlphaSierraPapa for the SharpDevelop Team")]
+[assembly: AssemblyCopyright("Copyright 2011-$INSERTYEAR$ AlphaSierraPapa for the SharpDevelop Team")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -21,8 +21,8 @@ using System.Diagnostics.CodeAnalysis;
 // If you need to expose a type to COM, use [ComVisible(true)] on that type.
 [assembly: ComVisible(false)]
 
-[assembly: AssemblyVersion("3.0.0.2551")]
-[assembly: AssemblyInformationalVersion("3.0.0.2551-newdecompiler-fda50108")]
+[assembly: AssemblyVersion("$INSERTVERSION$")]
+[assembly: AssemblyInformationalVersion("$INSERTVERSION$$INSERTBRANCHPOSTFIX$$INSERTVERSIONNAMEPOSTFIX$-$INSERTSHORTCOMMITHASH$")]
 [assembly: NeutralResourcesLanguage("en-US")]
 
 [assembly: InternalsVisibleTo("ILSpy.BamlDecompiler.Tests")]

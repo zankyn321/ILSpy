@@ -16,6 +16,12 @@ namespace ILSpy.BamlDecompiler.Tests
 	[TestFixture]
 	public class BamlTestRunner
 	{
+		[OneTimeSetUp]
+		public void Setup()
+		{
+			Environment.CurrentDirectory = Path.GetDirectoryName(typeof(BamlTestRunner).Assembly.Location);
+		}
+
 		[Test]
 		public void Simple()
 		{
@@ -113,7 +119,7 @@ namespace ILSpy.BamlDecompiler.Tests
 			Resource res = assembly.MainModule.Resources.First();
 			Stream bamlStream = LoadBaml(res, name + ".baml");
 			Assert.IsNotNull(bamlStream);
-			XDocument document = BamlResourceEntryNode.LoadIntoDocument(resolver, assembly, bamlStream);
+			XDocument document = BamlDecompiler.LoadIntoDocument(resolver, assembly, bamlStream);
 
 			XamlIsEqual(File.ReadAllText(sourcePath), document.ToString());
 		}
