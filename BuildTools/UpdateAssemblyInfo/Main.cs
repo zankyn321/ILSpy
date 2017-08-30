@@ -33,6 +33,10 @@ namespace UpdateAssemblyInfo
 				Output = "ICSharpCode.Decompiler/Properties/AssemblyInfo.cs"
 			},
 			new TemplateFile {
+				Input = "ILSpy.BamlDecompiler/Properties/AssemblyInfo.template.cs",
+				Output = "ILSpy.BamlDecompiler/Properties/AssemblyInfo.cs"
+			},
+			new TemplateFile {
 				Input = "ILSpy/Properties/app.config.template",
 				Output = "ILSpy/app.config"
 			}
