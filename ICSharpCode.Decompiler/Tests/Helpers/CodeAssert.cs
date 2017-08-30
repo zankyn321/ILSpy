@@ -26,44 +26,43 @@ namespace ICSharpCode.Decompiler.Tests.Helpers
 	{
 		public static bool Compare(string input1, string input2, StringWriter diff, Func<string, string> normalizeLine)
 		{
-			var differ = new AlignedDiff<string>(
-				NormalizeAndSplitCode(input1),
-				NormalizeAndSplitCode(input2),
-				new CodeLineEqualityComparer(normalizeLine),
-				new StringSimilarityComparer(),
-				new StringAlignmentFilter());
+			var a = NormalizeAndSplitCode(input1);
+			var b = NormalizeAndSplitCode(input2);
+			var sections = Diff.CalculateSections(a, b, new CodeLineEqualityComparer(normalizeLine));
+			var elements = Diff.AlignElements(a, b, sections, new StringSimilarityDiffElementAligner());
 
 			bool result = true, ignoreChange;
 
 			int line1 = 0, line2 = 0;
 
-			foreach (var change in differ.Generate()) {
-				switch (change.Change) {
-					case ChangeType.Same:
+			foreach (var element in elements) {
+				switch (element.Operation) {
+					case DiffOperation.Match:
 						diff.Write("{0,4} {1,4} ", ++line1, ++line2);
 						diff.Write("  ");
-						diff.WriteLine(change.Element1);
+						diff.WriteLine(element.ElementFromCollection1.Value);
 						break;
-					case ChangeType.Added:
+					case DiffOperation.Insert:
 						diff.Write("     {1,4} ", line1, ++line2);
-						result &= ignoreChange = ShouldIgnoreChange(change.Element2);
+						result &= ignoreChange = ShouldIgnoreChange(element.ElementFromCollection2.Value);
 						diff.Write(ignoreChange ? "    " : " +  ");
-						diff.WriteLine(change.Element2);
+						diff.WriteLine(element.ElementFromCollection2.Value);
 						break;
-					case ChangeType.Deleted:
+					case DiffOperation.Delete:
 						diff.Write("{0,4}      ", ++line1, line2);
-						result &= ignoreChange = ShouldIgnoreChange(change.Element1);
+						result &= ignoreChange = ShouldIgnoreChange(element.ElementFromCollection1.Value);
 						diff.Write(ignoreChange ? "    " : " -  ");
-						diff.WriteLine(change.Element1);
+						diff.WriteLine(element.ElementFromCollection1.Value);
 						break;
-					case ChangeType.Changed:
+					case DiffOperation.Replace:
+					case DiffOperation.Modify:
 						diff.Write("{0,4}      ", ++line1, line2);
 						result = false;
 						diff.Write("(-) ");
-						diff.WriteLine(change.Element1);
+						diff.WriteLine(element.ElementFromCollection1.Value);
 						diff.Write("     {1,4} ", line1, ++line2);
 						diff.Write("(+) ");
-						diff.WriteLine(change.Element2);
+						diff.WriteLine(element.ElementFromCollection2.Value);
 						break;
 				}
 			}
@@ -114,7 +113,7 @@ namespace ICSharpCode.Decompiler.Tests.Helpers
 			return NormalizeLine(line) == string.Empty;
 		}
 
-		private static IEnumerable<string> NormalizeAndSplitCode(string input)
+		private static IList<string> NormalizeAndSplitCode(string input)
 		{
 			return input.Split(new[] { "\r\n", "\n", "\r" }, StringSplitOptions.RemoveEmptyEntries);
 		}

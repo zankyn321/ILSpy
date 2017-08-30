@@ -16,8 +16,9 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System;
 using System.Diagnostics;
-using NUnit.Core;
+using System.IO;
 using NUnit.Framework;
 
 namespace ICSharpCode.Decompiler.Tests
@@ -25,17 +26,18 @@ namespace ICSharpCode.Decompiler.Tests
 	[SetUpFixture]
 	public class TestTraceListener : DefaultTraceListener
 	{
-		[SetUp]
+		[OneTimeSetUp]
 		public void RunBeforeAnyTests()
 		{
-			Debug.Listeners.Insert(0, this);
+			Environment.CurrentDirectory = Path.GetDirectoryName(typeof(TestTraceListener).Assembly.Location);
+			Trace.Listeners.Insert(0, this);
 		}
 		
 		
-		[TearDown]
+		[OneTimeTearDown]
 		public void RunAfterAnyTests()
 		{
-			Debug.Listeners.Remove(this);
+			Trace.Listeners.Remove(this);
 		}
 		
 		public override void Fail(string message, string detailMessage)
